@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>
+	<h:head>
+		<f:facet name="ikinci">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		</f:facet>
+		<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+	</h:head>
+	<h:body>
+
+		<p:layout fullPage="true">
+			<p:layoutUnit position="north" size="100" resizable="true"
+				closable="true" collapsible="true">BİLECİK ŞEYH EDEBALİ ÜNİVERSİTESİ MARAL ANALİZ TAKİP VE REZERVASYON SİSTEMİ
+					
+					<h:form>
+					<h:outputText value="#{uyeGirisBean.kullanicihosgeldin}" />
+				</h:form>
+			</p:layoutUnit>
+			<p:layoutUnit position="south" size="100" closable="true"
+				collapsible="true">BİLECİK ŞEYH EDEBALİ ÜNİVERSİTESİ</p:layoutUnit>
+			<p:layoutUnit position="west" size="250" collapsible="true">
+
+				<h:form>
+					<p:growl>
+						<p:autoUpdate />
+					</p:growl>
+
+					<p:panelMenu>
+						<p:submenu label="Rezervasyon">
+							<p:menuitem value="Rezervasyon Oluştur"
+								action="takvim.xhtml?faces-redirect=true"
+								icon="ui-icon-arrowrefresh-1-w" />
+							<p:menuitem value="Analiz Fiyatları"
+								action="analizfiyatlari.xhtml?faces-redirect=true"
+								icon="ui-icon-arrowrefresh-1-w" />
+						</p:submenu>
+						<p:separator />
+						<p:submenu label="Hesabım">
+							<p:menuitem value="Üyelik Bilgilerim"
+								action="uyebilgileri.xhtml?faces-redirect=true" />
+							<p:menuitem value="Rezervasyonlarım"
+								action="rezervasyonlarim.xhtml?faces-redirect=true" />
+							<p:menuitem value="Devam Edenler"
+								action="baslayananalizler.xhtml?faces-redirect=true" />
+							<p:menuitem value="Geçmiş Analizler"
+								action="zamanigecenler.xhtml?faces-redirect=true" />
+							<p:menuitem value="Güvenli Çıkış"
+								action="#{uyeGirisBean.cikisYap}" />
+						</p:submenu>
+					</p:panelMenu>
+				</h:form>
+			</p:layoutUnit>
+			<p:layoutUnit position="center">
+				<h:form id="form">
+					<p:growl id="msgs" showDetail="true" />
+
+					<p:dataTable id="uyeler" var="uye" value="#{uyeBean.uyeBilgileri}"
+						editable="true" style="margin-bottom:20px">
+
+						<p:ajax event="rowEdit" listener="#{uyeBean.onRowEdit}"
+							update=":form:msgs" />
+						<p:ajax event="rowEditCancel" listener="#{uyeBean.onRowCancel}"
+							update=":form:msgs" />
+
+						<p:column headerText="Üye Adı">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{uye.uyeAdi}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="modelInput" value="#{uye.uyeAdi}"
+										style="width:100%" label="Üye Adı" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Üye Soyadı">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{uye.uyeSoyadi}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{uye.uyeSoyadi}" style="width:100%"
+										label="Üye Soyadı" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Kullanıcı Adı">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{uye.uyeKullaniciAdi}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{uye.uyeKullaniciAdi}" style="width:100%"
+										label="Kullanıcı Adı" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Kullanıcı Parola">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{uye.uyeKullaniciParola}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{uye.uyeKullaniciParola}"
+										style="width:100%" label="Kullanıcı Parola" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="E-Mail">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{uye.uyeEmail}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{uye.uyeEmail}" style="width:100%"
+										label="E-Mail" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Telefon">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{uye.uyeTelefon}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{uye.uyeTelefon}" style="width:100%"
+										label="Telefon" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column style="width:32px">
+							<p:rowEditor />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:layoutUnit>
+		</p:layout>
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>
+	<h:head>
+		<f:facet name="ikinci">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		</f:facet>
+		<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+	</h:head>
+	<h:body>
+
+		<p:layout fullPage="true">
+			<p:layoutUnit position="north" size="100" resizable="true"
+				closable="true" collapsible="true">BİLECİK ŞEYH EDEBALİ ÜNİVERSİTESİ MARAL ANALİZ TAKİP VE REZERVASYON SİSTEMİ
+					
+				<h:form>
+					<h:outputText value="#{uyeGirisBean.kullanicihosgeldin}" />
+				</h:form>
+			</p:layoutUnit>
+			<p:layoutUnit position="south" size="100" closable="true"
+				collapsible="true">BİLECİK ŞEYH EDEBALİ ÜNİVERSİTESİ</p:layoutUnit>
+			<p:layoutUnit position="west" size="250" collapsible="true">
+
+				<h:form>
+					<p:growl>
+						<p:autoUpdate />
+					</p:growl>
+
+					<p:panelMenu>
+						<p:submenu label="Rezervasyon">
+							<p:menuitem value="Rezervasyon Oluştur"
+								action="yetkilitakvim.xhtml?faces-redirect=true"
+								icon="ui-icon-arrowrefresh-1-w" />
+						</p:submenu>
+						<p:separator />
+						<p:submenu label="Yetkili Kullanıcı">
+							<p:menuitem value="Analiz Durumları"
+								action="analizdurum.xhtml?faces-redirect=true" />
+							<p:menuitem value="Üyelerin Geçmiş Analizleri"
+								action="yetkilizgguncelle.xhtml?faces-redirect=true" />
+							<p:menuitem value="Güncellemeler"
+								action="guncellemeler.xhtml?faces-redirect=true" />
+							<p:menuitem value="Üyeler"
+								action="yetkilitumuyeler.xhtml?faces-redirect=true" />
+						</p:submenu>
+						<p:submenu label="Hesabım">
+							<p:menuitem value="Üyelik Bilgilerim"
+								action="yetkiliuyebilgileri.xhtml?faces-redirect=true" />
+							<p:menuitem value="Rezervasyonlarım"
+								action="yetkilirezervasyonlarim.xhtml?faces-redirect=true" />
+							<p:menuitem value="Devam Edenler"
+								action="yetkilibaslayananalizler.xhtml?faces-redirect=true" />
+							<p:menuitem value="Geçmiş Analizler"
+								action="yetkilizamanigecenler.xhtml?faces-redirect=true" />
+							<p:menuitem value="Güvenli Çıkış"
+								action="#{uyeGirisBean.cikisYap}" />
+						</p:submenu>
+					</p:panelMenu>
+				</h:form>
+			</p:layoutUnit>
+			<p:layoutUnit position="center">
+				<h:form id="form">
+					<p:growl id="msgs" showDetail="true" />
+
+					<p:dataTable id="analizler" var="analiz"
+						value="#{analizBean.analizler}" editable="true"
+						style="margin-bottom:20px">
+
+						<p:ajax event="rowEdit" listener="#{analizBean.onRowEdit}"
+							update=":form:msgs" />
+						<p:ajax event="rowEditCancel" listener="#{analizBean.onRowCancel}"
+							update=":form:msgs" />
+
+						<p:column headerText="Analiz No">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{analiz.analizId}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText id="modelInput" value="#{analiz.analizId}"
+										style="width:100%" label="Analiz No" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Analiz Adı">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{analiz.analizAdi}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{analiz.analizAdi}" style="width:100%"
+										label="Analiz Adı" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Analiz Süresi (Saat)">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{analiz.analizSuresiSaat}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{analiz.analizSuresiSaat}"
+										style="width:100%" label="Analiz Süresi (Saat)" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Analiz Süresi (Dakika)">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{analiz.analizSuresiDakika}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu value="#{analiz.analizSuresiDakika}"
+										style="width:81%">
+										<f:selectItems value="#{analizBean.dakikalar}"
+											var="analizSuresiDakika" itemLabel="#{analizSuresiDakika}"
+											itemValue="#{analizSuresiDakika}" />
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Analiz Fiyatı (TL)">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{analiz.analizFiyati}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{analiz.analizFiyati}" style="width:100%"
+										label="Analiz Fiyatı (TL)" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Aktiflik">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{analiz.aktif}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu value="#{analiz.aktif}" style="width:81%">
+										<f:selectItems value="#{analizBean.aktiflik}" var="aktif"
+											itemLabel="#{aktif}" itemValue="#{aktif}" />
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column style="width:32px">
+							<p:rowEditor />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:layoutUnit>
+		</p:layout>
+	</h:body>
+</f:view>
+</html>

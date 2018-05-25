@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+	<script type="text/javascript">
+	function DisableBackButton() {
+		window.history.forward()
+	}
+	DisableBackButton();
+	window.onload = DisableBackButton;
+	window.onpageshow = function(evt) {
+		if (evt.persisted)
+			DisableBackButton()
+	}
+	window.onunload = function() {
+		void (0)
+	}
+</script>
+	<h:form id="UyeGiris">
+		<p:panelGrid id="LoginPanelGrid" columns="3"
+			style="margin:auto;margin-top:5%">
+			<f:facet name="header">Üye Girişi</f:facet>
+			<h:outputLabel for="username" value="Kullanıcı Adı: *" />
+			<p:inputText id="username" value="#{uyeGirisBean.uyeKullaniciAdi}"
+				required="true" requiredMessage="Kullanıcı adı giriniz"
+				label="Kullanıcı Adı" />
+			<p:message for="username" />
+
+			<h:outputLabel for="password" value="Şifre: *" />
+			<p:password id="password" value="#{uyeGirisBean.uyeKullaniciParola}"
+				required="true" requiredMessage="Şifre giriniz" label="Şifre" />
+			<p:message for="password" />
+
+			<f:facet name="footer">
+				<p:commandButton type="submit" action="#{uyeGirisBean.girisYap()}"
+					update="UyeGiris" value="Giriş" style="margin:0" />
+				<p:messages></p:messages>
+			</f:facet>
+		</p:panelGrid>
+	</h:form>
+	<h:form id="kayit">
+		<p:panelGrid columns="1" style="margin:auto;margin-top:5%">
+			<f:facet name="header">
+				<p:commandButton value="Kaydol"
+					action="kayit.xhtml?faces-redirect=true"></p:commandButton>
+			</f:facet>
+		</p:panelGrid>
+	</h:form>
+</h:body>
+</html>

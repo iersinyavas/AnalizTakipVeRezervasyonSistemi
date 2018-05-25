@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+	<h:head>
+		<f:facet name="birinci">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		</f:facet>
+	</h:head>
+	<h:body>
+		<script type="text/javascript">
+	function DisableBackButton() {
+		window.history.forward()
+	}
+	DisableBackButton();
+	window.onload = DisableBackButton;
+	window.onpageshow = function(evt) {
+		if (evt.persisted)
+			DisableBackButton()
+	}
+	window.onunload = function() {
+		void (0)
+	}
+</script>
+		<h:form>
+			<p:commandButton value="Giriş Yap"
+				action="login.xhtml?faces-redirect=true"></p:commandButton>
+			<p:commandButton value="Kaydol"
+				action="kayit.xhtml?faces-redirect=true"></p:commandButton>
+		</h:form>
+	</h:body>
+</f:view>
+</html>

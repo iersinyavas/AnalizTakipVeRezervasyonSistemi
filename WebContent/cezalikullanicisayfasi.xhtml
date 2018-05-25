@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+	<h:form id="cezaliuye">
+		<p:panelGrid id="cezapaneli" columns="1"
+			style="margin:auto;margin-top:5%">
+			<f:facet name="header">CEZALI ÜYE</f:facet>
+			<h:form>
+				<h:outputText value="#{uyeGirisBean.cezalikullanicihosgeldin}" /><br/><br/>
+				<p:commandButton value="Giriş Yap" action="login.xhtml?faces-redirect=true" style="margin:auto;margin-left:45%"/>
+			</h:form>
+		</p:panelGrid>
+	</h:form>
+</h:body>
+</html>

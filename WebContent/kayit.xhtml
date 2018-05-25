@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<h:body>
+
+	<h:form id="UyeKayit">
+		<p:panelGrid columns="3" style="margin:auto;margin-top:5%">
+			<f:facet name="header">Üye Kayıt</f:facet>
+			<h:outputLabel for="uyeAdi" value="Üyenin Adı: *" />
+			<p:inputText id="uyeAdi" value="#{uyeKayitBean.uyeAdi}"
+				required="true" requiredMessage="Adınızı giriniz" label="Üyenin Adı" />
+			<p:message for="uyeAdi" />
+
+			<h:outputLabel for="uyeSoyad" value="Üyenin Soyadı: *" />
+			<p:inputText id="uyeSoyad" value="#{uyeKayitBean.uyeSoyadi}"
+				required="true" requiredMessage="Soyadınızı giriniz"
+				label="Üyenin Soyadı" />
+			<p:message for="uyeSoyad" />
+
+			<h:outputLabel for="kullaniciadi" value="Kullanıcı Adı: *" />
+			<p:inputText id="kullaniciadi"
+				value="#{uyeKayitBean.uyeKullaniciAdi}" required="true"
+				requiredMessage="Kullanıcı adınızı giriniz" label="Kullanıcı Adı" />
+			<p:message for="kullaniciadi" />
+
+			<h:outputLabel for="sifre" value="Şifre: *" />
+			<p:password id="sifre" value="#{uyeKayitBean.uyeKullaniciParola}"
+				required="true" requiredMessage="Şifre giriniz" label="Şifre" />
+			<p:message for="sifre" />
+
+			<p:outputLabel for="telefon" value="Telefon: *" />
+			<p:inputMask id="telefon" value="#{uyeKayitBean.uyeTelefon}"
+				mask="(999) 999-9999" required="true"
+				requiredMessage="Telefon numarası giriniz" label="Telefon" />
+			<p:message for="telefon" />
+
+			<h:outputLabel for="email" value="E-mail: *" />
+			<p:inputText id="email" value="#{uyeKayitBean.uyeEmail}"
+				required="true" requiredMessage="E-mail adresini giriniz"
+				label="Email" />
+			<p:message for="email" />
+
+			<f:facet name="footer">
+				<p:commandButton action="#{uyeKayitBean.uyeKayitEkle()}"
+					value="Kaydol" update="UyeKayit" style="margin:0" />
+				<p:messages></p:messages>
+			</f:facet>
+		</p:panelGrid>
+	</h:form>
+	<h:form id="login">
+		<p:panelGrid columns="1" style="margin:auto;margin-top:5%">
+			<f:facet name="header">
+				<p:commandButton value="Giriş Yap"
+					action="login.xhtml?faces-redirect=true"></p:commandButton>
+			</f:facet>
+		</p:panelGrid>
+	</h:form>
+</h:body>
+</html>

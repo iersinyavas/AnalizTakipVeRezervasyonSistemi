@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>
+	<h:head>
+		<f:facet name="ikinci">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		</f:facet>
+		<h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+	</h:head>
+	<h:body>
+
+		<p:layout fullPage="true">
+			<p:layoutUnit position="north" size="100" resizable="true"
+				closable="true" collapsible="true">BİLECİK ŞEYH EDEBALİ ÜNİVERSİTESİ MARAL ANALİZ TAKİP VE REZERVASYON SİSTEMİ
+					
+				<h:form>
+					<h:outputText value="#{uyeGirisBean.kullanicihosgeldin}" />
+				</h:form>
+			</p:layoutUnit>
+			<p:layoutUnit position="south" size="100" closable="true"
+				collapsible="true">BİLECİK ŞEYH EDEBALİ ÜNİVERSİTESİ</p:layoutUnit>
+			<p:layoutUnit position="west" size="250" collapsible="true">
+
+				<h:form>
+					<p:growl>
+						<p:autoUpdate />
+					</p:growl>
+
+					<p:panelMenu>
+						<p:submenu label="Rezervasyon">
+							<p:menuitem value="Rezervasyon Oluştur"
+								action="yetkilitakvim.xhtml?faces-redirect=true"
+								icon="ui-icon-arrowrefresh-1-w" />
+						</p:submenu>
+						<p:separator />
+						<p:submenu label="Yetkili Kullanıcı">
+							<p:menuitem value="Analiz Durumları"
+								action="analizdurum.xhtml?faces-redirect=true" />
+							<p:menuitem value="Üyelerin Geçmiş Analizleri"
+								action="yetkilizgguncelle.xhtml?faces-redirect=true" />
+							<p:menuitem value="Güncellemeler"
+								action="guncellemeler.xhtml?faces-redirect=true" />
+							<p:menuitem value="Üyeler"
+								action="yetkilitumuyeler.xhtml?faces-redirect=true" />
+						</p:submenu>
+						<p:submenu label="Hesabım">
+							<p:menuitem value="Üyelik Bilgilerim"
+								action="yetkiliuyebilgileri.xhtml?faces-redirect=true" />
+							<p:menuitem value="Rezervasyonlarım"
+								action="yetkilirezervasyonlarim.xhtml?faces-redirect=true" />
+							<p:menuitem value="Devam Edenler"
+								action="yetkilibaslayananalizler.xhtml?faces-redirect=true" />
+							<p:menuitem value="Geçmiş Analizler"
+								action="yetkilizamanigecenler.xhtml?faces-redirect=true" />
+							<p:menuitem value="Güvenli Çıkış"
+								action="#{uyeGirisBean.cikisYap}" />
+						</p:submenu>
+					</p:panelMenu>
+				</h:form>
+			</p:layoutUnit>
+			<p:layoutUnit position="center">
+				<p:outputLabel
+					value="Lütfen dikkat!!! Rezervasyon saatini hafta ve gün sekmeleri içerisinde belirleyiniz. Aksi halde rezervasyon dikkate alınmayacaktır."></p:outputLabel>
+				<h:form>
+					<p:growl id="messages" showDetail="true" />
+
+					<h:panelGrid columnClasses="value">
+						<p:schedule id="scheduleLocale"
+							value="#{rezervasyonTakvim.eventModel}" locale="tr"
+							widgetVar="myschedule" timeZone="GMT+2">
+							<p:ajax event="dateSelect"
+								listener="#{rezervasyonTakvim.onDateSelect}" update="formDialod"
+								oncomplete="PF('eventDialog').show();" />
+							<p:ajax event="dateSelect"
+								listener="#{rezervasyonTakvim.onSelectBeforeToday}"
+								update="messages" />
+							<p:ajax event="dateSelect"
+								listener="#{rezervasyonTakvim.tarihOlustur()}" update="tarih" />
+							<p:ajax event="dateSelect"
+								listener="#{rezervasyonTakvim.onDateSelect}" update="messages" />
+						</p:schedule>
+					</h:panelGrid>
+
+					<p:dialog widgetVar="eventDialog" header="Rezervasyon Bilgileri"
+						showEffect="clip" hideEffect="clip">
+						<h:outputText id="tarih"
+							value="Seçilen Tarih : #{rezervasyonTakvim.tarih}"></h:outputText>
+						<h:form id="formDialod">
+
+							<p:growl id="growl" sticky="true" showDetail="true" />
+
+							<p:wizard flowListener="#{userWizard.onFlowProcess}"
+								style="width:680px" backLabel="Geri" nextLabel="İleri">
+								<p:tab id="analiz" title="Analiz">
+									<p:panel header="Analiz Bilgileri">
+										<p:messages />
+
+										<p:outputLabel for="analizsec" value="Analiz: " />
+										<p:selectOneMenu id="analizsec" required="true"
+											requiredMessage="Analiz seçiniz."
+											value="#{rezervasyonTakvim.event.title}" style="width:550px">
+											<f:selectItem itemLabel="Analiz Seç" itemValue=""
+												noSelectionOption="true" />
+											<f:selectItems value="#{dropdownView.analizler}" />
+										</p:selectOneMenu>									
+									</p:panel>
+								</p:tab>
+
+								<p:tab id="numune" title="Numune">
+									<p:panel header="Numune Bilgileri">
+										<p:messages />
+										<h:panelGrid columns="2" columnClasses="label, value">
+											<h:outputText value="Numune Adı: " />
+											<p:inputText value="#{userWizard.user.numuneAdi}"
+												required="true" label="Email" />
+										</h:panelGrid>
+									</p:panel>
+								</p:tab>
+
+								<p:tab id="dosya" title="Sözleşme Dosyası">
+									<p:panel header="Sözleşme dosyası">
+										<p:messages />
+										<p:fileUpload
+											fileUploadListener="#{rezervasyonTakvim.handleFileUpload}"
+											mode="advanced" dragDropSupport="false" update="pdfuyarisi"
+											sizeLimit="1000000" allowTypes="/(\.|\/)(pdf)$/"
+											required="true" requiredMessage="Pdf Dosyası Seçiniz"
+											cancelLabel="İptal" uploadLabel="Yükle" label="Dosya Seç" />
+										<p:growl id="pdfuyarisi" showDetail="true" />
+									</p:panel>
+								</p:tab>
+
+								<p:tab id="confirm" title="Sözleşme">
+									<p:panel header="Sözleşme Bilgileri">
+										<h:panelGrid id="confirmation" columns="2"
+											columnClasses="grid,grid,grid">
+
+											<h:panelGrid columns="2" columnClasses="label, value">
+												<h:outputText value="Numune Adı: " />
+												<h:outputText value="#{userWizard.user.numuneAdi}" />
+											</h:panelGrid>
+										</h:panelGrid>
+
+										<p:commandButton id="addButton" value="Kaydet"
+											update="cakisma"
+											actionListener="#{rezervasyonTakvim.addEvent}"
+											oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+										<p:growl id="cakisma" showDetail="true" />
+
+									</p:panel>
+								</p:tab>
+							</p:wizard>
+						</h:form>
+					</p:dialog>
+				</h:form>
+
+				<script type="text/javascript">
+			    PrimeFaces.locales['tr'] = {
+			        closeText: 'Kapat',
+			        prevText: 'Geri',
+			        nextText: 'İleri',
+			        currentText: 'Bugün',
+			        monthNames: ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran',
+			            'Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
+			        monthNamesShort: ['Oca','Şub','Mar','Nis','May','Haz',
+			            'Tem','Ağu','Eyl','Eki','Kas','Ara'],
+			        dayNames: ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'],
+			        dayNamesShort: ['Pz','Pt','Sa','Ça','Pe','Cu','Ct'],
+			        dayNamesMin: ['Pz','Pt','Sa','Ça','Pe','Cu','Ct'],
+			        weekHeader: 'Hf',
+			        firstDay: 1,
+			        isRTL: false,
+			        showMonthAfterYear: false,
+			        yearSuffix: '',
+			        month: 'Ay',
+			        week: 'Hafta',
+			        day: 'Gün',
+			        allDayText : 'Tüm Gün'
+			    };
+				</script>
+				<style type="text/css">
+.value {
+	width: 1000px;
+}
+</style>
+			</p:layoutUnit>
+		</p:layout>
+	</h:body>
+</f:view>
+</html>
